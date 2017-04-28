@@ -1,0 +1,96 @@
+<style>
+#right {
+/*  height:100%;
+  background-color: white;
+  text-align: center;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;*/
+ /* height:10;
+  overflow-y: scroll;
+  overflow-x: scroll;*/
+  overflow-y:scroll; 
+  position:relative;
+  max-height: 300px;
+  /*  width: 10%;*/
+}
+th, td {
+    padding: 15px;
+    font-size: 15px;
+
+}
+tr:hover {background-color: #f5f5f5}
+div {
+/*    border:1px solid black;
+    background-color: lightblue;*/
+}
+</style>
+
+
+<div class="alert alert-success">
+    <strong>We're Streaming 🔑🔑🔑</strong><p>This wordcloud is made from <b>{{count_of_records}} tweets </b></p>
+    <p> With an average sentiment score (-1 to 1) of <b>{{sentiment_score}} </b>
+</div>
+    
+<div class="row">
+    <div id="div_body" class="col-lg-10">
+        <!--this is where the d3 goes-->
+    </div>
+
+     <div class="col-md-2" id="right" style="display:none;">
+        {{html_table|safe}}
+
+    </div>
+
+</div>
+
+   
+
+    <br>
+
+
+<script>
+
+function updateData(){
+
+    // var frequency_list = [{'text':'yo', 'size':100}]
+    var frequency_list = {{output_list|safe}};
+    // console.log(frequency_list);
+
+
+    var color = d3.scale.linear()
+    .domain([0,1,2,3,4,5,6,10,15,20,100])
+    .range(["#ddd", "#ccc", "#bbb", "#aaa", "#999", "#888", "#777", "#666", "#555", "#444", "#333", "#222"]);
+
+    d3.layout.cloud().size([800, 300])
+    .words(frequency_list)
+    .rotate(0)
+    .fontSize(function(d) { return d.size; })
+    .on("end", draw)
+    .start();
+
+
+    function draw(words) {
+        d3.select("#div_body").append("svg")
+                .attr("width", 1200)
+                .attr("height", 300)
+                .attr("class", "wordcloud")
+                .append("g")
+                // without the transform, words words would get cutoff to the left and top, they would
+                // appear outside of the SVG area
+                .attr("transform", "translate(320,200)")
+                .selectAll("text")
+                .data(words)
+                .enter().append("text")
+                .style("font-size", function(d) { return d.size + "px"; })
+
+                .attr("transform", function(d) {
+                    return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+                })
+                .text(function(d) { return d.text; });
+            };
+        }
+
+        updateData();
+        </script>
