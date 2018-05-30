@@ -1,3 +1,3 @@
 # twitter_stream
 
-<div class='gfyitem' data-id=WillingAstonishingGuppy></div><p> <a href="https://gfycat.com/gifs/detail/WillingAstonishingGuppy">via Gfycat</a></p>
+![Alt Text](https://media.giphy.com/media/vFKqnCdLPNOKc/giphy.gif)
